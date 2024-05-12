@@ -1,0 +1,9 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+votre_action_de_recherche:
+    path: /recherche
+    controller: App\Controller\LivresController::search
