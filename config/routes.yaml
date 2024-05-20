@@ -7,3 +7,4 @@ controllers:
 votre_action_de_recherche:
     path: /recherche
     controller: App\Controller\LivresController::search
+

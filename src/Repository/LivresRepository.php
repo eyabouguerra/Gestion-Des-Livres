@@ -53,13 +53,18 @@ public function searchLivres($query)
     $queryBuilder = $this->createQueryBuilder('l');
 
     if ($query) {
-        $queryBuilder->andWhere('l.titre LIKE :query')
-                    
-                    ->setParameter('query', '%'.$query.'%');
+        $queryBuilder->andWhere(
+            $queryBuilder->expr()->orX(
+                $queryBuilder->expr()->like('l.titre', ':query'),
+                $queryBuilder->expr()->like('l.Auteur', ':query'), // Correction du nom du champ de l'auteur
+            )
+        )->setParameter('query', '%'.$query.'%');
     }
 
     return $queryBuilder->getQuery()->getResult();
 }
+
+
 
 
 

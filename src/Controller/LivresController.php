@@ -79,11 +79,18 @@ class LivresController extends AbstractController
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($livre);
-            $em->flush();
-            return $this->redirectToRoute('admin_livres');
-        }
 
+            $currentYear = (new \DateTime())->format('Y');
+            if ($livre->getQte() > 0 && $livre->getEditedAt()->format('Y') == $currentYear) {
+                $em->persist($livre);
+                $em->flush();
+                return $this->redirectToRoute('admin_livres');
+            } else {
+
+                $this->addFlash('error', 'La quantité doit être supérieure à 0 et la date doit être de l\'année courante.');
+            }
+        }
+    
         $livresList = $em->getRepository(Livres::class)->findAll();
     
         return $this->render('livres/add.html.twig', [
